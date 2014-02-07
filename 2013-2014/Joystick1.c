@@ -62,11 +62,34 @@ void adjustDrivingPair(short& side1, short& side2)
 
 task main()
 {
+	bool forwardIsFlipped = false;
+	bool button3StillPressed = false;
+
   while (true)
   {
     getJoystickSettings(joystick);
     short leftMotorSpeed = joystick.joy1_y1;
     short rightMotorSpeed = joystick.joy1_y2;
+
+    bool button3BeingPressed = joy1Btn(3);
+
+    if (button3BeingPressed && !button3StillPressed)
+    {
+    	forwardIsFlipped = !forwardIsFlipped;
+    	button3StillPressed = true;
+    }
+    else if (! button3BeingPressed) {
+    	button3StillPressed = false;
+    }
+
+    if (forwardIsFlipped) {
+    	short newLeft = rightMotorSpeed * -1;
+    	short newRight = leftMotorSpeed * -1;
+
+    	leftMotorSpeed = newLeft;
+    	rightMotorSpeed = newRight;
+    }
+
     adjustDrivingPair(leftMotorSpeed, rightMotorSpeed);
     motor[leftMotor]  = leftMotorSpeed;
     motor[rightMotor] = rightMotorSpeed;

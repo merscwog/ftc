@@ -118,7 +118,7 @@ task main()
 {
 	initializeRobot();
 	// FIXME: This needs to be here!!!!
-  //waitForStart(); // Wait for the beginning of autonomous phase.
+  waitForStart(); // Wait for the beginning of autonomous phase.
 
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
@@ -131,10 +131,10 @@ task main()
   // FIXME: Put this back in to
 	//wait1Msec(10000);
 
-	StartTask(scoreFromSensor);
-
 	// Reset to 0
   nMotorEncoder[leftMotor] = 0;
+
+  StartTask(scoreFromSensor);
 
   // NOTE: Start slow for short period
   while (nMotorEncoder[leftMotor] < inchesAsRotations(2))
@@ -147,8 +147,8 @@ task main()
   // NOTE: Drive straight (FIX this code later)
   while (nMotorEncoder[leftMotor] < inchesAsRotations(70))
   {
-  	motor[leftMotor] = 45;
-  	motor[rightMotor] = 45;
+  	motor[leftMotor] = 35;
+  	motor[rightMotor] = 35;
   	wait1Msec(20);
   }
   motor[leftMotor] = 0;
@@ -177,7 +177,7 @@ task main()
 	motor[rightMotor] = 0;
 
 	nMotorEncoder[leftMotor] = 0;
-	while (nMotorEncoder[leftMotor] < inchesAsRotations(60))
+	while (nMotorEncoder[leftMotor] < inchesAsRotations(65))
 	{
 		motor[leftMotor] = 90;
 		motor[rightMotor] = 90;
