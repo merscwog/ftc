@@ -102,12 +102,14 @@ task scoreFromSensor()
 
   	if (value == checkValue)
   	{
+  		motor[leftMotor] = 0;
+  		motor[rightMotor] = 0;
   		motor[motorA] = 100;
-  		wait1Msec(200);
+  		wait1Msec(350);
   		motor[motorA] = 0;
-  		wait1Msec(50);
+  		wait1Msec(100);
   		motor[motorA] = -100;
-  		wait1Msec(200);
+  		wait1Msec(350);
   		motor[motorA] = 0;
   		break;
   	}
@@ -128,8 +130,8 @@ task main()
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
 
-  // FIXME: Put this back in to
-	//wait1Msec(10000);
+  // FIXME: Put this back in if we need to wait
+	//wait1Msec(5000);
 
 	// Reset to 0
   nMotorEncoder[leftMotor] = 0;
@@ -170,17 +172,17 @@ task main()
 
 	motor[leftMotor] = 0;
 	nMotorEncoder[rightMotor] = 0;
- 	while (nMotorEncoder[rightMotor] < inchesAsRotations(18))
+ 	while (nMotorEncoder[rightMotor] < inchesAsRotations(30))
  	{
  		motor[rightMotor] = 30;
 	}
 	motor[rightMotor] = 0;
 
 	nMotorEncoder[leftMotor] = 0;
-	while (nMotorEncoder[leftMotor] < inchesAsRotations(65))
+	while (nMotorEncoder[leftMotor] < inchesAsRotations(50))
 	{
-		motor[leftMotor] = 90;
-		motor[rightMotor] = 90;
+		motor[leftMotor] = 70;
+		motor[rightMotor] = 70;
 	}
 
 	motor[leftMotor] = 0;
