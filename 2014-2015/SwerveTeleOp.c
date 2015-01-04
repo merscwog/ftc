@@ -209,6 +209,33 @@ task main()
     	//rightMotorSwerve = newRightSwerve;
     }
 
+    if (joy1Btn(Btn5)) {
+    	short straightSpeed = leftMotorSpeed;
+    	bool adjustToStraight = true;
+
+    	// If both positive, use higher value
+    	// If both negative, use lower value
+    	if ((leftMotorSpeed > 0) && (rightMotorSpeed > 0)) {
+    		if (rightMotorSpeed > straightSpeed) {
+    			straightSpeed = rightMotorSpeed;
+    		}
+    	}
+    	else if ((leftMotorSpeed < 0) && (rightMotorSpeed < 0)) {
+    		if (rightMotorSpeed < straightSpeed) {
+    			straightSpeed = rightMotorSpeed;
+    		}
+    	}
+    	else {
+    		adjustToStraight = false;
+    	}
+
+    	// If we should adjust to straight speed, set both to same value
+    	if (adjustToStraight) {
+    		leftMotorSpeed = straightSpeed;
+    		rightMotorSpeed = straightSpeed;
+    	}
+    }
+
     motor[leftMotor]  = adjustValue(leftMotorSpeed);
     motor[rightMotor] = adjustValue(rightMotorSpeed);
 
@@ -242,7 +269,7 @@ task main()
 
     // Raise and lower lift.
     if (joy2Btn(4)) {
-    	motor[Lift] = 100;
+    	motor[Lift] = 75;
     }
     else if (joy2Btn(2)) {
    		motor[Lift] = -50;
