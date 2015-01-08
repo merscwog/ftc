@@ -2,7 +2,7 @@
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Motor,  mtr_S1_C1_1,     swerveMotor,   tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     leftMotor,     tmotorTetrix, PIDControl, driveLeft, encoder)
-#pragma config(Motor,  mtr_S1_C2_1,     Lift,          tmotorTetrix, openLoop, encoder)
+#pragma config(Motor,  mtr_S1_C2_1,     Lift,          tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C2_2,     rightMotor,    tmotorTetrix, PIDControl, reversed, driveRight, encoder)
 #pragma config(Servo,  srvo_S1_C3_1,    leftServo,            tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_2,    centerServo,          tServoContinuousRotation)
@@ -31,7 +31,8 @@
 short adjustValue(short inputValue)
 {
     //inputValue = (short)((inputValue * (abs(inputValue) / 128.0)) * 0.781);
-		inputValue = (short)((inputValue * (abs(inputValue) / 128.0)) * 0.594);
+		//inputValue = (short)((inputValue * (abs(inputValue) / 128.0)) * 0.594);
+		inputValue = (short)((inputValue * (abs(inputValue) * abs(inputValue)/ 16384.0)) * 0.594);
     if (abs(inputValue) < 15)
     {
     	inputValue = 0; // Don't move unless outside range
@@ -269,10 +270,10 @@ task main()
 
     // Raise and lower lift.
     if (joy2Btn(4)) {
-    	motor[Lift] = 75;
+    	motor[Lift] = 35;
     }
     else if (joy2Btn(2)) {
-   		motor[Lift] = -50;
+   		motor[Lift] = -25;
     }
     else {
     	manualLift = false;
