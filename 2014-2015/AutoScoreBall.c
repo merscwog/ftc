@@ -148,6 +148,10 @@ task main()
   	motor[rightMotor] = -20;
   }
 
+  motor[leftMotor] = -100;
+  motor[rightMotor] = -100;
+  wait1Msec(250);
+
   motor[leftMotor] = 0;
   motor[rightMotor] = 0;
 
