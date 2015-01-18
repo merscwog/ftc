@@ -220,6 +220,15 @@ task main()
   	motor[rightMotor] = -20;
   }
 
+  nMotorEncoder[leftMotor] = 0;
+  nMotorEncoder[rightMotor] = 0;
+
+  while (abs(nMotorEncoder[rightMotor]) < inchesAsClicks(2))
+  {
+  	motor[leftMotor] = 0;
+  	motor[rightMotor] = -10;
+  }
+
   motor[leftMotor] = 0;
   motor[rightMotor] = 0;
 
@@ -229,6 +238,12 @@ task main()
   servo[rightServo] = 244;
 
   wait1Msec(250);
+
+  while (abs(nMotorEncoder[leftMotor]) < inchesAsClicks(12))
+  {
+    motor[leftMotor] = 25;
+    motor[rightMotor] = 30;
+  }
 
   while (abs(nMotorEncoder[leftMotor]) < inchesAsClicks(78))
   {
@@ -248,7 +263,7 @@ task main()
   nMotorEncoder[leftMotor] = 0;
   nMotorEncoder[rightMotor] = 0;
 
-  while (abs(nMotorEncoder[leftMotor]) < inchesAsClicks(18))
+  while (abs(nMotorEncoder[leftMotor]) < inchesAsClicks(19))
   {
     motor[leftMotor] = -30;
     motor[rightMotor] = 30;

@@ -5,7 +5,7 @@
 #pragma config(Motor,  mtr_S1_C2_1,     Lift,          tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C2_2,     rightMotor,    tmotorTetrix, PIDControl, reversed, driveRight, encoder)
 #pragma config(Servo,  srvo_S1_C3_1,    leftServo,            tServoStandard)
-#pragma config(Servo,  srvo_S1_C3_2,    centerServo,          tServoContinuousRotation)
+#pragma config(Servo,  srvo_S1_C3_2,    centerServo,          tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_3,    rightServo,           tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_4,    basketServo,          tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_5,    servo5,               tServoNone)
@@ -88,6 +88,8 @@ task main()
 
   waitForStart(); // Wait for the beginning of autonomous phase.
 
+  servo[basketServo] = 135;
+
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
   ////                                                   ////
@@ -96,14 +98,128 @@ task main()
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
 
+  short val1 = -1;
+  short val2 = -1;
+  short val3 = -1;
+  short val4 = -1;
+  short val5 = -1;
+  short val6 = -1;
+  short val7 = -1;
 
   while (true) {
-  	nxtDisplayBigStringAt(0, 31, "%d", SensorValue[irseeker]);
-  	wait1Msec(100);
+  	servo[centerServo] = 250;
+  	wait1Msec(1000);
+  	val1 = SensorValue[irseeker];
+  	servo[centerServo] = 219;
+  	wait1Msec(500);
+  	val2 = SensorValue[irseeker];
+  	servo[centerServo] = 187;
+  	wait1Msec(500);
+  	val3 = SensorValue[irseeker];
+  	servo[centerServo] = 156;
+  	wait1Msec(500);
+  	val4 = SensorValue[irseeker];
+  	servo[centerServo] = 124;
+  	wait1Msec(500);
+  	val5 = SensorValue[irseeker];
+  	servo[centerServo] = 93;
+  	wait1Msec(500);
+  	val6 = SensorValue[irseeker];
+  	servo[centerServo] = 61;
+  	wait1Msec(500);
+  	val7 = SensorValue[irseeker];
+  	break;
+	}
+
+	short position = -1;
+	short sum = val2 + val4 + val7;
+	switch (sum) {
+		case 16:
+			position = 1;
+			break;
+		case 17:
+			position = 2;
+			break;
+		case 21:
+		  position = 3;
+		  break;
+		default:
+		  position = 0;
+		  break;
+	}
+
+	/**
+	while (true) {
+		nxtDisplayBigStringAt(0, 61, "%d %d %d %d", val1, val2, val3, val4);
+		nxtDisplayBigStringAt(0, 41, "%d %d %d", val5, val6, val7);
+		nxtDisplayBigStringAt(0, 21, "%d", position);
+  }
+  **/
+
+  if (position == 2) {
+  	nMotorEncoder[leftMotor] = 0;
+	  nMotorEncoder[rightMotor] = 0;
+
+    short rotationDistance = inchesAsClicks(1.85);
+    while (nMotorEncoder[rightMotor] < rotationDistance) {
+  	  motor[leftMotor] = 0;
+  	  motor[rightMotor] = 30;
+    }
   }
 
+	nMotorEncoder[leftMotor] = 0;
+  nMotorEncoder[rightMotor] = 0;
+
+  motor[leftMotor] = 0;
+  motor[rightMotor] = 0;
+
   // FIXME: Don't do anything
-  return;
+	if (position == 1)
+	{
+    short kickstandDistance = inchesAsClicks(63);
+    while (nMotorEncoder[leftMotor] < kickstandDistance) {
+  	  motor[leftMotor] = 50;
+  	  motor[rightMotor] = 35;
+    }
+
+    nMotorEncoder[leftMotor] = 0;
+    nMotorEncoder[rightMotor] = 0;
+
+    motor[leftMotor] = 0;
+    motor[rightMotor] = 0;
+
+    kickstandDistance = inchesAsClicks(20);
+    while (nMotorEncoder[rightMotor] < kickstandDistance) {
+  	  motor[leftMotor] = -30;
+  	  motor[rightMotor] = 30;
+    }
+
+    nMotorEncoder[leftMotor] = 0;
+    nMotorEncoder[rightMotor] = 0;
+
+    motor[leftMotor] = 0;
+    motor[rightMotor] = 0;
+
+    kickstandDistance = inchesAsClicks(18);
+    while (nMotorEncoder[rightMotor] < kickstandDistance) {
+  	  //motor[leftMotor] = 15;
+  	  //motor[rightMotor] = 22;
+  	  motor[leftMotor] = 70;
+  	  motor[rightMotor] = 100;
+    }
+
+    motor[leftMotor] = 0;
+    motor[rightMotor] = 0;
+
+  	wait1Msec(1000);
+  	motor[motorB] = -100;
+  	motor[motorC] = -100;
+  	wait1Msec(1000);
+    servo[basketServo] = 246;
+    wait1Msec(3000);
+
+    return;
+  }
 
   nMotorEncoder[leftMotor] = 0;
   nMotorEncoder[rightMotor] = 0;
